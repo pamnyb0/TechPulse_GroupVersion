@@ -5,14 +5,102 @@ namespace TechPulse.Models
 {
     public class Product
     {
-        public int Id { get; set; } // Unique identifier for the product
+        public int Id { get; set; }
 
-        public string? Username { get; set; } // Username of the product
+        [Required(ErrorMessage = "Du måste fylla i fältet.")]
+        [DisplayName("Namn")]
+        [StringLength(100, ErrorMessage = "Namnet får inte vara längre än 100 tecken.")]
+        public string? Name { get; set; }
 
-        public string? Description { get; set; } // Description of the product
+        [DisplayName("Användarnamn")]
+        public string? Username { get; set; }
 
-        public decimal Price { get; set; } // Price of the product
+        [DisplayName("Beskrivning")]
+        [StringLength(500, ErrorMessage = "Beskrivningen får inte vara längre än 500 tecken.")]
+        public string? Description { get; set; }
 
-        public string? ImageUrl { get; set; } // URL of the product image
+        [Required(ErrorMessage = "Du måste fylla i fältet.")]
+        [DisplayName("Pris")]
+        [DataType(DataType.Currency)]
+        [Range(0, 999999.99, ErrorMessage = "Priset måste vara mellan 0 och 999,999.99 kr")]
+        public decimal Price { get; set; }
+
+        [DisplayName("Produktbild")]
+        public string? ImageUrl { get; set; }
+
+        // Navigation properties
+        public List<OrderItem>? OrderItems { get; set; }
+        
+        public static Product GetSampleById(int id)
+        {
+            return id switch
+            {
+                1 => new Product
+                {
+                    Id = 1,
+                    Name = "Smartphone",
+                    Description = "Smartphone",
+                    Price = 12999.99m,
+                    ImageUrl = "/images/products/smartphone.jpg"
+                },
+                2 => new Product
+                {
+                    Id = 2,
+                    Name = "Laptop",
+                    Description = "En laptop med bra prestanda",
+                    Price = 8499.99m,
+                    ImageUrl = "/images/products/laptop.jpg"
+                },
+                3 => new Product
+                {
+                    Id = 3,
+                    Name = "Trådlösa hörlurar",
+                    Description = "Trådlösa hörlurar med stor kvalitet",
+                    Price = 2799.99m,
+                    ImageUrl = "/images/products/headphones.jpg"
+                },
+                4 => new Product
+                {
+                    Id = 4,
+                    Name = "Smartklocka",
+                    Description = "Träningsklocka med smarta funktioner",
+                    Price = 3499.99m,
+                    ImageUrl = "/images/products/smartwatch.jpg"
+                },
+                5 => new Product
+                {
+                    Id = 5,
+                    Name = "Datorskärm",
+                    Description = "Datormskärm 27 tum",
+                    Price = 4299.99m,
+                    ImageUrl = "/images/products/monitor.jpg"
+                },
+                6 => new Product
+                {
+                    Id = 6,
+                    Name = "Gaming mus",
+                    Description = "Gaming mus",
+                    Price = 899.99m,
+                    ImageUrl = "/images/products/mouse.jpg"
+                },
+                7 => new Product
+                {
+                    Id = 7,
+                    Name = "Gamning tangentbord",
+                    Description = "Gaming tangentbord med belysning",
+                    Price = 1299.99m,
+                    ImageUrl = "/images/products/keyboard.jpg"
+                },
+                8 => new Product
+                {
+                    Id = 8,
+                    Name = "SSD",
+                    Description = "SSD för lagring av olika typer av filer",
+                    Price = 1499.99m,
+                    ImageUrl = "/images/products/ssd.jpg"
+                },
+                _ => null
+            };
+        }
     }
 }

@@ -1,0 +1,40 @@
+@model List<TechPulse.Models.Product>
+@{
+    ViewData["Title"] = "Produkter";
+}
+
+<div class="container my-5">
+    <h1 class="mb-4">Våra produkter</h1>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-img-top bg-light d-flex justify-content-center align-items-center" style="height: 200px;">
+                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid" style="max-height: 180px; max-width: 90%;">
+                        }
+                        else
+                        {
+                            <div class="text-muted">
+                                <i class="bi bi-image" style="font-size: 5rem;"></i>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text text-muted small">@product.Description</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="fs-5 fw-bold">@product.Price.ToString("C0")</span>
+                            <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-primary btn-sm">
+                                <i class="bi bi-cart-plus"></i> Lägg i varukorg
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

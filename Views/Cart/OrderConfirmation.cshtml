@@ -1,0 +1,46 @@
+@model TechPulse.Models.Order
+@{
+    ViewData["Title"] = "Orderbekräftelse";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h4 class="mb-0">Tack för din beställning!</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                        <h5 class="mt-3">Din beställning har mottagits</h5>
+                        <p class="text-muted">Ordernummer: #@Model.Id</p>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Beställningsdetaljer</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-muted">Orderdatum</div>
+                                <div class="col-sm-8">@Model.OrderDate.ToString("yyyy-MM-dd HH:mm")</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 text-muted">Totalt belopp</div>
+                                <div class="col-sm-8">@Model.TotalAmount.ToString("C0")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="mb-4">En bekräftelse har skickats till din e-postadress.</p>
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-primary">
+                            <i class="bi bi-arrow-left"></i> Fortsätt handla
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

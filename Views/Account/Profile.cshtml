@@ -1,0 +1,237 @@
+@model TechPulse.Models.User
+@{
+    ViewData["Title"] = "Min profil";
+    var orders = ViewBag.Orders as List<TechPulse.Models.Order>;
+}
+
+<div class="container my-5">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mb-4">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mb-4">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                        {
+                            <img src="@Model.ProfileImageUrl" alt="Profile" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="/images/default-profile.jpg" alt="Default Profile" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        }
+                        <h5 class="card-title mb-0">@Model.Username</h5>
+                        <p class="text-muted">@Model.Email</p>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="bi bi-pencil-square me-2"></i>Redigera profil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Användaruppgifter</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Användarnamn</div>
+                        <div class="col-sm-8">@Model.Username</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">E-post</div>
+                        <div class="col-sm-8">@Model.Email</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Telefonnummer</div>
+                        <div class="col-sm-8">@(Model.PhoneNumber ?? "Ej angivet")</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Adressuppgifter</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Adress</div>
+                        <div class="col-sm-8">@(Model.Address ?? "Ej angivet")</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Postnummer</div>
+                        <div class="col-sm-8">@Model.PostalCode</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Stad</div>
+                        <div class="col-sm-8">@Model.City</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order History Section -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Orderhistorik</h5>
+                </div>
+                <div class="card-body">
+                    @if (orders != null && orders.Any())
+                    {
+                        <div class="accordion" id="orderAccordion">
+                            @foreach (var order in orders)
+                            {
+                                <div class="accordion-item mb-3 border">
+                                    <h2 class="accordion-header" id="heading@(order.Id)">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(order.Id)" aria-expanded="false" aria-controls="collapse@(order.Id)">
+                                            <div class="d-flex justify-content-between w-100 me-3">
+                                                <span>Order #@order.Id</span>
+                                                <span class="text-muted">@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</span>
+                                                <span class="fw-bold">@order.TotalAmount.ToString("C0")</span>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse@(order.Id)" class="accordion-collapse collapse" aria-labelledby="heading@(order.Id)" data-bs-parent="#orderAccordion">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Produkt</th>
+                                                            <th>Pris</th>
+                                                            <th>Antal</th>
+                                                            <th>Summa</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in order.OrderItems)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span>@item.ProductName</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>@(item.UnitPrice > 0 ? item.UnitPrice.ToString("C0") : "0 kr")</td>
+                                                                <td>@item.Quantity</td>
+                                                                <td>@((item.UnitPrice * item.Quantity).ToString("C0"))</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="3" class="text-end"><strong>Totalt:</strong></td>
+                                                            <td><strong>@order.TotalAmount.ToString("C0")</strong></td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            Du har inte lagt några beställningar än. <a href="@Url.Action("Index", "Product")">Börja handla</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Redigera profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="mb-3">
+                        <label for="profileUsername" class="form-label">Användarnamn</label>
+                        <input type="text" class="form-control" id="profileUsername" value="@Model.Username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileEmail" class="form-label">E-post</label>
+                        <input type="email" class="form-control" id="profileEmail" value="@Model.Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profilePhone" class="form-label">Telefonnummer</label>
+                        <input type="tel" class="form-control" id="profilePhone" value="@Model.PhoneNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileAddress" class="form-label">Adress</label>
+                        <input type="text" class="form-control" id="profileAddress" value="@Model.Address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profilePostalCode" class="form-label">Postnummer</label>
+                        <input type="text" class="form-control" id="profilePostalCode" value="@Model.PostalCode">
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileCity" class="form-label">Stad</label>
+                        <input type="text" class="form-control" id="profileCity" value="@Model.City">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                <button type="button" class="btn btn-primary" id="saveProfileBtn">Spara ändringar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            
+            if (location.search.includes('cartCleared=true') || localStorage.getItem('cartCleared') === 'true') {
+                localStorage.removeItem('cartCleared');
+                
+                try {
+                    sessionStorage.removeItem('Cart');
+                    sessionStorage.removeItem('cart');
+                    sessionStorage.setItem('Cart', JSON.stringify({ Items: [] }));
+                } catch (e) {
+                    console.error('Error clearing cart from sessionStorage:', e);
+                }
+                
+                const cartBadge = document.querySelector('.position-absolute.top-0.start-100.translate-middle.badge.rounded-pill.bg-danger');
+                if (cartBadge) {
+                    cartBadge.parentNode.removeChild(cartBadge);
+                }
+                
+                fetch('@Url.Action("ClearCart", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).catch(err => console.error('Error clearing cart:', err));
+            }
+        });
+    </script>
+} 

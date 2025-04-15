@@ -6,6 +6,7 @@ namespace TechPulse.Models
     public class LoginModel
     {
         [Required(ErrorMessage = "Du måste fylla i fältet.")]
+        [EmailAddress(ErrorMessage = "Ogiltig e-postadress.")]
         [DisplayName("Användarnamn")]
         public string? Username { get; set; }
 

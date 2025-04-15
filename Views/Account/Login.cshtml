@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Logga in</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="loginForm" method="post" action="@Url.Action("Login", "Account")">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-post eller användarnamn</label>
+                            <input type="text" class="form-control" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Lösenord</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Håll mig inloggad</label>
+                        </div>
+                        
+                        <div class="alert alert-danger d-none" id="loginError"></div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Logga in</button>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="@Url.Action("ForgotPassword", "Account")" class="text-decoration-none">Glömt lösenord?</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">Har du inget konto? <a href="@Url.Action("Register", "Account")" class="text-decoration-none">Skapa konto</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $("#loginForm").on("submit", function(e) {
+                e.preventDefault();
+                
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = "@Url.Action("Index", "Home")";
+                        } else {
+                            $("#loginError").text(response.message).removeClass("d-none");
+                        }
+                    },
+                    error: function() {
+                        $("#loginError").text("Ett fel uppstod. Försök igen.").removeClass("d-none");
+                    }
+                });
+            });
+        });
+    </script>
+} 

@@ -8,21 +8,32 @@ namespace TechPulse.Data
         public TechPulseDbContext(DbContextOptions<TechPulseDbContext> options) : base(options)
         {
         }
-        public DbSet<User> Users { get; set; } // Table for storing user information
-        public DbSet<Product> Products { get; set; } // Table for storing product information
-        public DbSet<PurchaseHistory> PurchaseHistories { get; set; } // Table for storing purchase history information
-        public DbSet<Article> Articles { get; set; } // Table for storing articles
+
+        // User and Content Management
+        public DbSet<User> Users { get; set; }
+        public DbSet<Article> Articles { get; set; }
+
+        // Product and Shopping System
+        public DbSet<Product> Products { get; set; }
+        public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            // Configure decimal precision for monetary values
             builder.Entity<Product>()
                 .Property(p => p.Price)
                 .HasPrecision(18, 2);
 
             builder.Entity<PurchaseHistory>()
                 .Property(ph => ph.TotalAmount)
+                .HasPrecision(18, 2);
+
+            builder.Entity<OrderItem>()
+                .Property(oi => oi.UnitPrice)
                 .HasPrecision(18, 2);
 
             // Add test users for development

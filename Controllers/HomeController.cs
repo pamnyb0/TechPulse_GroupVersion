@@ -1,22 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TechPulse.Models;
+using TechPulse.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TechPulse.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly TechPulseDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, TechPulseDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.Title = "Start";
-            return View();
+            var products = await _context.Products.ToListAsync();
+            return View(products);
         }
 
         public IActionResult Privacy()
@@ -28,6 +33,12 @@ namespace TechPulse.Controllers
         public IActionResult Publish()
         {
             ViewBag.Title = "Publish";
+            return View();
+        }
+
+        public IActionResult Shop()
+        {
+            ViewBag.Title = "Shop";
             return View();
         }
 

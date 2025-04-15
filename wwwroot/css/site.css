@@ -1,371 +1,377 @@
 :root {
-    --background-color: white;
-    --text-color: black;
+  --background-color: white;
+  --text-color: black;
 }
 
 *::selection {
-    background-color: #663bff;
-    color: white;
+  background-color: #663bff;
+  color: white;
 }
 
 html {
-    font-size: 14px;
-    box-sizing: border-box;
-    position: relative;
+  font-size: 14px;
+  box-sizing: border-box;
+  position: relative;
 }
-
 
 body {
-    display: flex;
-    flex-direction: column;
-    font-family: Poppins, Roboto;
-    transition: background-color 0.3s ease, color .3s ease;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    min-height: 100vh;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Poppins, Roboto;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  margin: 0;
 }
 
-    body.dark-mode {
-        --background-color: black;
-        --text-color: white;
-    }
+body.dark-mode {
+  --background-color: black;
+  --text-color: white;
+}
 
-    body.light-mode {
-        --background-color: white;
-        --text-color: black;
-    }
+body.light-mode {
+  --background-color: white;
+  --text-color: black;
+}
 
+body.dark-mode .navbar-brand {
+  color: white;
+}
 
-    body.dark-mode .navbar-brand {
-        color: white;
-    }
+body.dark-mode .nav-item a {
+  color: #663bff;
+}
 
-    body.dark-mode .nav-item a {
-        color: #663bff;
-    }
-
-    body.light-mode .nav-item a {
-        color: black;
-    }
-
+body.light-mode .nav-item a {
+  color: black;
+}
 
 #theme-toggle-btn {
-    position: fixed;
-    display: flex;
-    right: 2%;
-    top: 1%;
-    width: 20px;
-    height: 20px;
-    padding: 2px;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    transition: transform 0.4s ease-in-out;
+  position: fixed;
+  display: flex;
+  right: 2%;
+  top: 1%;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  transition: transform 0.4s ease-in-out;
 }
 
-    #theme-toggle-btn:active {
-        transform: rotate(360deg);
-    }
+#theme-toggle-btn:active {
+  transform: rotate(360deg);
+}
 
 .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  transition: all 0.3s;
 }
-
 
 #search {
-    display: flex;
-    border: 2px solid dimgrey;
-    transition: all 0.3s ease-in-out;
-    outline: none;
-    max-width: 700px;
-    width: 100%;
-    margin: 0 auto;
+  display: flex;
+  border: 2px solid dimgrey;
+  transition: all 0.3s ease-in-out;
+  outline: none;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
 }
 
-    #search:focus {
-        border-color: #663bff;
-    }
-
-.modal-account {
-    display: flex;
-    align-content: center;
-    justify-content: center;
+#search:focus {
+  border-color: #663bff;
 }
 
 .modal-account {
-    gap: 50px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-    .modal-account a {
-        color: #663bff !important;
-    }
+.modal-account {
+  gap: 50px;
+}
+
+.modal-account a {
+  color: #663bff !important;
+}
 
 .send-once {
-    display: flex;
-    justify-content: end;
-    align-content: center;
+  display: flex;
+  justify-content: end;
+  align-content: center;
 }
 
-    .send-once button[type="button"] {
-        font-size: 13px;
-        color: #663bff;
-        outline: none;
-    }
+.send-once button[type="button"] {
+  font-size: 13px;
+  color: #663bff;
+  outline: none;
+}
 
-        .send-once button[type="button"]:focus {
-            border: none;
-        }
+.send-once button[type="button"]:focus {
+  border: none;
+}
 
 .navbar-toggler {
-    border: none;
+  border: none;
 }
 
-    .navbar-toggler:focus {
-        box-shadow: none;
-    }
+.navbar-toggler:focus {
+  box-shadow: none;
+}
 
 body.dark-mode #theme-toggle-btn:hover {
-    background-color: #333;
+  background-color: #333;
 }
 
 body.light-mode #theme-toggle-btn:hover {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
-.pulse-text, .nav-link {
-    position: relative;
-    color: #663bff;
-    text-decoration: none;
+.pulse-text,
+.nav-link {
+  position: relative;
+  color: #663bff;
+  text-decoration: none;
 }
 
-    .pulse-text::after, .nav-link::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: 0;
-        left: 50%;
-        background-color: #663bff;
-        transition: all 0.3s ease-in-out;
-    }
+.pulse-text::after,
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #663bff;
+  transition: all 0.3s ease-in-out;
+}
 
-    .pulse-text:hover::after, .nav-link:hover::after {
-        width: 100%;
-        left: 0;
-    }
+.pulse-text:hover::after,
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
 
-#rememberMe, #rememberMelabel {
-    cursor: pointer;
+#rememberMe,
+#rememberMelabel {
+  cursor: pointer;
 }
 
 #rememberMe {
-    transition: all 0.1s ease-in-out;
-    border-color: gray;
+  transition: all 0.1s ease-in-out;
+  border-color: gray;
 }
 
-    #rememberMe:checked {
-        background-color: #663bff;
-        border: 2px solid #663bff;
-    }
+#rememberMe:checked {
+  background-color: #663bff;
+  border: 2px solid #663bff;
+}
 
-    #rememberMe:disabled, #rememberMe:disabled + label {
-        cursor: not-allowed;
-    }
+#rememberMe:disabled,
+#rememberMe:disabled + label {
+  cursor: not-allowed;
+}
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .modal-content {
-    box-shadow: 0 0 1px grey;
-    max-width: 500px;
-    width: 100%;
+  box-shadow: 0 0 1px grey;
+  max-width: 500px;
+  width: 100%;
 }
 
 .form-loginBtn {
-    display: flex;
-    justify-content: end;
+  display: flex;
+  justify-content: end;
 }
 
-    .form-loginBtn button[type=submit] {
-        background-color: #663bff;
-        color: white;
-    }
-
-        .form-loginBtn button[type=submit]:hover {
-            background-color: #4519e2;
-        }
-
-input[type="text"], input[type="password"] {
-    border: 1px solid dimgrey;
+.form-loginBtn button[type="submit"] {
+  background-color: #663bff;
+  color: white;
 }
 
-    input[type="text"]:focus, input[type="password"]:focus {
-        box-shadow: none;
-        border: 1px solid #663bff;
-    }
+.form-loginBtn button[type="submit"]:hover {
+  background-color: #4519e2;
+}
+
+input[type="text"],
+input[type="password"] {
+  border: 1px solid dimgrey;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  box-shadow: none;
+  border: 1px solid #663bff;
+}
 
 body.dark-mode .modal-content {
-    background-color: black;
+  background-color: black;
 }
 
 .checkbox-container {
-    top: 55%;
+  top: 55%;
 }
 
-body.dark-mode input[type="text"], body.dark-mode input[type="password"] {
-    background-color: black;
-    color: whitesmoke;
+body.dark-mode input[type="text"],
+body.dark-mode input[type="password"] {
+  background-color: black;
+  color: whitesmoke;
 }
 
 body.light-mode #loginForm {
-    color: black;
+  color: black;
 }
 
 .dark-mode .password-toggle {
-    color: white;
+  color: white;
 }
 
 body.dark-mode .footer {
-    border-top: 2px solid #663bff;
-    color: dimgray
+  border-top: 2px solid #663bff;
+  color: dimgray;
 }
 
 body.dark-mode input[type="password"]::-ms-reveal {
-    filter: invert(1);
+  filter: invert(1);
 }
 
 body.light-mode #moon {
-    display: none;
+  display: none;
 }
 
 body.dark-mode #sun {
-    display: none;
+  display: none;
 }
 
 body.light-mode .footer {
-    box-shadow: 0 2px 8px lightgray;
+  box-shadow: 0 2px 8px lightgray;
 }
 
 .profile-container {
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 10px;
-    display: inline-block;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+  display: inline-block;
 }
 
 #profile-thumb {
-    height: 30px;
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid whitesmoke;
-    transition: border-color 0.3s ease;
+  height: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid whitesmoke;
+  transition: border-color 0.3s ease;
 }
 
-    #profile-thumb:hover {
-        border-color: #663bff;
-    }
+#profile-thumb:hover {
+  border-color: #663bff;
+}
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    display: none;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .overlay-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
-    width: 80%;
-    position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+  position: relative;
 }
 
-    .overlay-content p {
-        margin: 10px 0;
-    }
+.overlay-content p {
+  margin: 10px 0;
+}
 
 .close-btn:hover {
-    color: #663bff;
+  color: #663bff;
 }
 
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-    color: var(--bs-secondary-color);
-    text-align: end;
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-    text-align: start;
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+  text-align: start;
 }
 
 /* typical phone screen resolution */
-@media only screen and (max-width :575px) {
+@media only screen and (max-width: 575px) {
+  .navbar-brand {
+    padding: 0;
+  }
 
-    .navbar-brand {
-        padding: 0;
-    }
+  .nav-link {
+    padding-left: 10px;
+    transition: all 0.3s ease-in-out;
+  }
 
-    .nav-link {
-        padding-left: 10px;
-        transition: all 0.3s ease-in-out;
-    }
+  .navbar-collapse {
+    margin: 1em 1em 1em 0.5em;
+    box-shadow: 0 2px 8px #663bff;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+  }
 
-    .navbar-collapse {
-        margin: 1em 1em 1em 0.5em;
-        box-shadow: 0 2px 8px #663bff;
-        border-radius: 5px;
-        transition: all 0.3s ease-in-out;
-    }
+  body.dark-mode .nav-link::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    left: 0;
+    width: 0%;
+    transition: all 0.02s ease-in-out;
+  }
 
-    body.dark-mode .nav-link::after {
-        content: '';
-        position: absolute;
-        height: 100%;
-        left: 0;
-        width: 0%;
-        transition: all 0.02s ease-in-out;
-    }
+  .nav-link {
+    position: relative;
+  }
 
-    .nav-link {
-        position: relative;
-    }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    left: 0;
+    width: 0%;
+    transition: all 0.02s ease-in;
+  }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            height: 100%;
-            left: 0;
-            width: 0%;
-            transition: all 0.02s ease-in;
-        }
+  .nav-link:hover::after {
+    width: 2px;
+    border-left: 2px solid dimgray;
+  }
 
-        .nav-link:hover::after {
-            width: 2px;
-            border-left: 2px solid dimgray;
-        }
+  body.dark-mode .nav-link:hover::after {
+    border-left: 2px solid #663bff;
+  }
 
-    body.dark-mode .nav-link:hover::after {
-        border-left: 2px solid #663bff;
-    }
-
-    /* landscape orientation */
-    @media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : landscape) {
-    }
-    /* portrait orientation */
-    @media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : portrait) {
-    }
+  /* landscape orientation */
+  @media only screen and (min-width: 375px) and (max-width: 667px) and (orientation: landscape) {
+  }
+  /* portrait orientation */
+  @media only screen and (min-width: 375px) and (max-width: 667px) and (orientation: portrait) {
+  }
 }
