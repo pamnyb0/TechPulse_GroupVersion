@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechPulse.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCleanWithUsers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,7 +62,9 @@ namespace TechPulse.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenCreated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,6 +106,15 @@ namespace TechPulse.Migrations
                 {
                     { 1, "TechPulse Team", "Produktivitet", "Det handlar om vanor, fokus och att använda rätt verktyg.", new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Utc), null, true, "Hur du blir produktiv som utvecklare", null },
                     { 2, "TechPulse Team", "Frontend", "Utility-first CSS låter dig bygga snabbt och konsekvent.", new DateTime(2024, 1, 8, 12, 0, 0, 0, DateTimeKind.Utc), null, true, "Varför Tailwind CSS är bättre än du tror", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "City", "Email", "Password", "PasswordResetToken", "PhoneNumber", "PostalCode", "ProfileImageUrl", "ResetTokenCreated", "Username" },
+                values: new object[,]
+                {
+                    { 4, "Techgatan 1", "Stockholm", "armend.berisha@example.com", "828KD9Ex<*y.", null, "070-1234567", "12345", "741435934740.jpg", null, "Armend Berisha" },
+                    { 999, null, "TestCity", "testuser@example.com", "letmein123", null, null, "12345", null, null, "TestUser" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -190,6 +190,29 @@ namespace TechPulse.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 999,
+                            City = "TestCity",
+                            Email = "testuser@example.com",
+                            Password = "letmein123",
+                            PostalCode = "12345",
+                            Username = "TestUser"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Techgatan 1",
+                            City = "Stockholm",
+                            Email = "armend.berisha@example.com",
+                            Password = "828KD9Ex<*y.",
+                            PhoneNumber = "070-1234567",
+                            PostalCode = "12345",
+                            ProfileImageUrl = "741435934740.jpg",
+                            Username = "Armend Berisha"
+                        });
                 });
 
             modelBuilder.Entity("TechPulse.Models.PurchaseHistory", b =>

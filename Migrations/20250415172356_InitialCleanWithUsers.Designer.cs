@@ -12,8 +12,8 @@ using TechPulse.Data;
 namespace TechPulse.Migrations
 {
     [DbContext(typeof(TechPulseDbContext))]
-    [Migration("20250414215313_InitCommunity")]
-    partial class InitCommunity
+    [Migration("20250415172356_InitialCleanWithUsers")]
+    partial class InitialCleanWithUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,20 @@ namespace TechPulse.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TechPulse.Models.Comment", b =>
+            modelBuilder.Entity("TechPulse.Models.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -40,101 +47,45 @@ namespace TechPulse.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.Follow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FollowedId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FollowerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowedId");
-
-                    b.HasIndex("FollowerId");
-
-                    b.ToTable("Follows");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.ForumReply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
+                    b.Property<string>("FeaturedImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ThreadId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ThreadId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ForumReplies");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.ForumThread", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("Articles");
 
-                    b.ToTable("ForumThreads");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AuthorId = "TechPulse Team",
+                            Category = "Produktivitet",
+                            Content = "Det handlar om vanor, fokus och att använda rätt verktyg.",
+                            CreatedAt = new DateTime(2024, 1, 10, 8, 0, 0, 0, DateTimeKind.Utc),
+                            IsPublished = true,
+                            Title = "Hur du blir produktiv som utvecklare"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AuthorId = "TechPulse Team",
+                            Category = "Frontend",
+                            Content = "Utility-first CSS låter dig bygga snabbt och konsekvent.",
+                            CreatedAt = new DateTime(2024, 1, 8, 12, 0, 0, 0, DateTimeKind.Utc),
+                            IsPublished = true,
+                            Title = "Varför Tailwind CSS är bättre än du tror"
+                        });
                 });
 
             modelBuilder.Entity("TechPulse.Models.Product", b =>
@@ -152,6 +103,7 @@ namespace TechPulse.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Username")
@@ -177,6 +129,7 @@ namespace TechPulse.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UserId")
@@ -215,6 +168,9 @@ namespace TechPulse.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -226,6 +182,9 @@ namespace TechPulse.Migrations
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ResetTokenCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -234,72 +193,29 @@ namespace TechPulse.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
 
-            modelBuilder.Entity("TechPulse.Models.Comment", b =>
-                {
-                    b.HasOne("TechPulse.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("TechPulse.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.Follow", b =>
-                {
-                    b.HasOne("TechPulse.Models.User", "Followed")
-                        .WithMany()
-                        .HasForeignKey("FollowedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TechPulse.Models.User", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Followed");
-
-                    b.Navigation("Follower");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.ForumReply", b =>
-                {
-                    b.HasOne("TechPulse.Models.ForumThread", "Thread")
-                        .WithMany("Replies")
-                        .HasForeignKey("ThreadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TechPulse.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Thread");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.ForumThread", b =>
-                {
-                    b.HasOne("TechPulse.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.HasData(
+                        new
+                        {
+                            Id = 999,
+                            City = "TestCity",
+                            Email = "testuser@example.com",
+                            Password = "letmein123",
+                            PostalCode = "12345",
+                            Username = "TestUser"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Techgatan 1",
+                            City = "Stockholm",
+                            Email = "armend.berisha@example.com",
+                            Password = "828KD9Ex<*y.",
+                            PhoneNumber = "070-1234567",
+                            PostalCode = "12345",
+                            ProfileImageUrl = "741435934740.jpg",
+                            Username = "Armend Berisha"
+                        });
                 });
 
             modelBuilder.Entity("TechPulse.Models.PurchaseHistory", b =>
@@ -319,11 +235,6 @@ namespace TechPulse.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TechPulse.Models.ForumThread", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("TechPulse.Models.User", b =>

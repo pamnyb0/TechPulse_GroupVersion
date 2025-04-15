@@ -2,6 +2,7 @@
 using TechPulse.Data;
 using TechPulse.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace TechPulse.Controllers
 {
@@ -31,16 +32,34 @@ namespace TechPulse.Controllers
 
                 if (user != null)
                 {
-                    // Add login logic here, e.g., set session/cookie
-                    // Redirect to profile or dashboard
-                    return RedirectToAction("Profile", "Home");
+                    // Set session variables for logged in user
+                    HttpContext.Session.SetString("IsLoggedIn", "true");
+                    HttpContext.Session.SetString("Username", user.Username);
+                    
+                    // Set profile image URL, using the uploads directory
+                    if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+                    {
+                        HttpContext.Session.SetString("ProfileImageUrl", $"~/uploads/{user.ProfileImageUrl}");
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 TempData["Message"] = "Ogiltigt användarnamn eller lösenord.";
-                return View(model); // Return back to the login page with the message
+                return View(model);
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Clear all session variables
+            HttpContext.Session.Clear();
+            
+            // Redirect to home page
+            return RedirectToAction("Index", "Home");
         }
     }
 }

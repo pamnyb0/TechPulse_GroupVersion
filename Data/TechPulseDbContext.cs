@@ -25,7 +25,33 @@ namespace TechPulse.Data
                 .Property(ph => ph.TotalAmount)
                 .HasPrecision(18, 2);
 
-            // Seed example Articles with static dates
+            // Add test users for development
+            builder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 999,
+                    Username = "TestUser",
+                    Password = "letmein123",
+                    Email = "testuser@example.com",
+                    PostalCode = "12345",
+                    City = "TestCity",
+                    ProfileImageUrl = null
+                },
+                new User
+                {
+                    Id = 4,
+                    Username = "Armend Berisha",
+                    Email = "armend.berisha@example.com",
+                    Password = "828KD9Ex<*y.",
+                    ProfileImageUrl = "741435934740.jpg",
+                    PhoneNumber = "070-1234567",
+                    Address = "Techgatan 1",
+                    PostalCode = "12345",
+                    City = "Stockholm"
+                }
+            );
+
+            // Seed example Articles
             builder.Entity<Article>().HasData(
                 new Article
                 {
