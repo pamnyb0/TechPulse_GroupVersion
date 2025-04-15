@@ -1,0 +1,38 @@
+MODUL 3 – FIX AV ADMIN-INLOGGNINGEN & SESSIONHANTERING
+
+PROBLEM:
+
+När vi fick Lukas modul var inloggningen delvis implementerad via JavaScript och inte färdig. Det användes AJAX för att försöka logga in, men detta fungerade inte korrekt. Sessioner sattes aldrig ordentligt och det gick inte att identifiera om en användare var inloggad, eller om det var en administratör. Logiken låg felplacerad och säkerheten var bristfällig.
+
+Vi märkte också att vyn `_Layout.cshtml` försökte använda dynamisk Razor för att binda inloggningsformuläret, vilket skapade kompileringsfel vid build (CS1963).
+
+
+FIX:
+
+1. Tog bort hela JavaScript-baserade inloggningen från `site.js` som Lukas lagt till.
+2. Flyttade all inloggningslogik till servern via `LoginController.cs`.
+3. Implementerade en ny **partial view**: `_LoginPartial.cshtml`, som är strongly-typed mot modellen `LoginModel.cs`.
+4. Uppdaterade layouten (`_Layout.cshtml`) så den renderar inloggningsformuläret via partial view med korrekt modell.
+5. Lade till en `Role`-property i `User.cs` så vi kan veta om användaren är en vanlig användare eller admin.
+6. Lade till sessionshantering:
+   - `"IsLoggedIn" = true`
+   - `"UserId"`, `"Username"`, `"UserRole"` och `"ProfileImageUrl"` sparas i session
+7. Lade till CSRF-skydd med `@Html.AntiForgeryToken()`
+8. Lade till felhantering (t.ex. ogiltigt lösenord visar röd varning)
+9. "Håll mig inloggad"-checkbox fungerar korrekt med disable tills fälten fylls i
+10. Lade till profilbild, namn, admin-meny etc i dropdown om man är inloggad
+
+FUNKTIONER EFTER FIX:
+---------------------
+-> Inloggning fungerar stabilt för både vanliga användare och administratörer  
+-> Sessionen håller reda på användarens roll och data  
+-> Profilbild visas i navbaren om uppladdad  
+-> Admin kan se andras köphistorik (via sin roll)  
+-> Alla felmeddelanden visas korrekt om man försöker logga in fel  
+-> Logout tömmer session och skickar tillbaka till startsidan
+
+VIKTIGT:
+---------
+Inga JavaScript-hack. Allt sköts via servern.
+Hela systemet är nu förberett för roller, admin, remember-me och säkerhet.
+
