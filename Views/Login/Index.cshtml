@@ -1,0 +1,42 @@
+﻿@model TechPulse.Models.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">Login</h2>
+            
+            @if (!string.IsNullOrEmpty(TempData["Message"]?.ToString()))
+            {
+                <div class="alert alert-danger">
+                    @TempData["Message"]
+                </div>
+            }
+
+            <form method="post" action="/Login/Index">
+                <input name="__RequestVerificationToken" type="hidden" value="@Html.AntiForgeryToken()" />
+                
+                <div class="form-group mb-3">
+                    <label for="Username">E-post:</label>
+                    <input type="text" id="Username" name="Username" class="form-control" value="@(Model?.Username ?? "")" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="Password">Lösenord:</label>
+                    <input type="password" id="Password" name="Password" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Logga in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

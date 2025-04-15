@@ -1,0 +1,234 @@
+﻿document.querySelectorAll('a').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const target = this.getAttribute('href');
+
+        if (!target ||
+            target.startsWith('/CreateAccount') ||
+            target.startsWith('/Login') ||
+            target.startsWith('/ForgottenPassword') ||
+            target.startsWith('https') ||
+            target.startsWith('.pdf') ||
+            target.startsWith('/Cart') ||
+            target.includes('Cart') ||
+            target.includes('cart')
+        ) { 
+            return; // Om det inte finns något mål eller om det är en inre länk, gör inget
+        }
+
+        e.preventDefault(); // Förhindra standardbeteende (länkarna laddas inte om omedelbart)
+
+        fetch(target)
+            .then(response => response.text())
+            .then(html => {
+                const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+
+                // Uppdaterar bara #content)
+                const content = parsedHTML.querySelector('main').innerHTML;
+                document.querySelector('#content').innerHTML = content;
+
+                // laddar inte om sidam
+                window.history.pushState({}, '', target);
+
+                // Uppdatera sidtiteln baserat på innehållet på den nya sidan
+                const newTitle = parsedHTML.querySelector('title').innerText;
+                document.title = newTitle;
+
+                // Initiera event listeners och animationer igen
+            })
+            .catch(err => console.error('Error fetching page:', err));
+    });
+});
+
+function openOtpModal() {
+    const usernameElement = document.getElementById("Username");
+    if (!usernameElement) {
+        console.error("Username element not found");
+        return;
+    }
+    
+    let username = usernameElement.value;
+    if (!username) {
+        alert("Ange ditt användarnamn eller mobilnummer först.")
+        return;
+    }
+
+    var loginModalEl = document.getElementById("loginModal");
+    if (loginModalEl) {
+        var loginModalInstance = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
+        loginModalInstance.hide();
+    }
+
+    var otpModalEl = document.getElementById("otpModal");
+    if (otpModalEl) {
+        var otpModalInstance = new bootstrap.Modal(otpModalEl);
+        otpModalInstance.show();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const username = document.getElementById("Username");
+    const password = document.getElementById("Password");
+    const rememberMe = document.getElementById("rememberMe");
+    
+    if (!username || !password) {
+        return;
+    }
+
+    const usernameError = document.getElementById("usernameError");
+    const passwordError = document.getElementById("passwordError");
+
+    function toggleCheckbox() {
+        if (!username || !password || !rememberMe) return;
+
+        let isFilled = username.value.trim() !== "" && password.value.trim() !== "";
+
+        rememberMe.disabled = !isFilled;
+
+        if (!isFilled) {
+            rememberMe.checked = false;
+        }
+    }
+
+    if (username) {
+        username.addEventListener("input", toggleCheckbox);
+        
+        if (usernameError) {
+            username.addEventListener("input", function () {
+                if (username.value.trim() === "") {
+                    username.classList.add("border-danger");
+                    usernameError.style.display = "block";
+                } else {
+                    username.classList.remove("border-danger");
+                    usernameError.style.display = "none";
+                }
+            });
+        }
+    }
+
+    if (password) {
+        password.addEventListener("input", toggleCheckbox);
+        
+        if (passwordError) {
+            password.addEventListener("input", function () {
+                if (password.value.trim() === "") {
+                    password.classList.add("border-danger");
+                    passwordError.style.display = "block";
+                } else {
+                    password.classList.remove("border-danger");
+                    passwordError.style.display = "none";
+                }
+            });
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const otpContainer = document.getElementById("otp-container");
+    
+    if (!otpContainer) {
+        return;
+    }
+    
+    const verifyBtn = document.getElementById("verifyCodeBtn");
+    const notFinished = document.getElementById("codeNotFinishedError");
+
+    let otpInputs = [];
+
+    for (let i = 0; i < 6; i++) {
+        let input = document.createElement("input");
+        input.type = "text";
+        input.maxLength = 1;
+        input.className = "otp-input form-control text-center";
+        input.style.width = '40px';
+        input.style.fontSize = "1.5em";
+        otpContainer.appendChild(input);
+        otpInputs.push(input);
+        input.setAttribute("inputmode", "numeric");
+        input.setAttribute("pattern", "[0-9]*")
+    }
+
+    otpInputs.forEach((input, index) => {
+        input.addEventListener("input", function (e) {
+            if (this.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+
+            checkOTPcompletion();
+        });
+
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Backspace" && index > 0 && this.value.length === 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+
+        input.addEventListener("keypress", function (e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    function checkOTPcompletion() {
+        if (!verifyBtn) return;
+        
+        let otpCode = otpInputs.map(input => input.value).join("");
+        verifyBtn.disabled = otpCode.length !== 6;
+
+        let allEmpty = otpInputs.every(input => input.value.trim() === "");
+        if (allEmpty && notFinished) {
+            otpInputs.forEach(input => input.classList.add("border-danger"));
+            notFinished.style.display = "block";
+        }
+        else if (notFinished) {
+            otpInputs.forEach(input => input.classList.remove("border-danger"));
+            notFinished.style.display = "none";
+        }
+    }
+});
+
+function verifyBtnEnabled() {
+    alert("Koden skickades till ditt telefonnummer!");
+    const verifyBtn = document.getElementById("verifyBtn");
+    if (verifyBtn) {
+        verifyBtn.disabled = false;
+    }
+}
+function placeOrder() {
+    fetch('/Cart/PlaceOrder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            updateCartCount(0);
+            window.location.href = '/Account/Profile';
+        } else {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Det gick inte att lägga beställningen');
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error placing order:', error);
+        const errorDiv = document.getElementById('orderErrorMessage');
+        if (errorDiv) {
+            errorDiv.textContent = error.message;
+            errorDiv.style.display = 'block';
+        }
+    });
+}
+function updateCartCount(count) {
+    const cartCountElement = document.getElementById('cartCount');
+    if (cartCountElement) {
+        if (count > 0) {
+            cartCountElement.textContent = count;
+            cartCountElement.style.display = 'inline-block';
+        } else {
+            cartCountElement.textContent = '0';
+            cartCountElement.style.display = 'none';
+        }
+    }
+}

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TechPulse.Models.User>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="/icons/list.png" rel="icon" type="image/x-icon"/>
+    <title>Visa konton</title>
+</head>
+<body>   
+    <p>
+        <a asp-action="Create" class="btn btn-outline-primary m-3">Skapa nytt konto</a> |
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary m-3">Gå tilll startsidan</a>
+
+        @if (!Model.Any())
+        {
+            <span class="text-danger">Inga konton</span>
+        }
+        else
+        {
+            <span class="text-success">Antal konton: @Model.Count()</span>
+        }
+
+
+        <form asp-action="DeleteAll" method="post" class="d-flex justify-content-end me-3" onsubmit="return confirm('Är du säker på att du vill radera @Model.Count() @(Model.Count() < 2 ? "konto" : "konton")?');">
+            <button type="submit" class="btn btn-outline-danger" aria-label="Delete All">
+                <span class="iconify" data-icon="akar-icons:trash-can" data-width="20" data-height="20"></span>
+            </button>
+        </form>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProfileImageUrl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.City)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProfileImageUrl)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" style="display: inline-block">
+                            <span class="iconify" data-icon="akar-icons:edit" data-width="20" data-height="20"></span>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.Id" style="display: inline-block">
+                            <span class="iconify" data-icon="akar-icons:info" data-width="20" data-height="20"></span>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" style="display: inline-block">
+                            <span class="iconify" data-icon="akar-icons:trash-can" data-width="20" data-height="20"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

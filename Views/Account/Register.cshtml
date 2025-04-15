@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Skapa konto";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Skapa konto</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">Fyll i formuläret nedan för att skapa ditt konto.</p>
+                    
+                    <form action="@Url.Action("Create", "CreateAccount")" method="post">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="Username" class="form-label">Användarnamn</label>
+                                <input type="text" class="form-control" id="Username" name="Username" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Email" class="form-label">E-post</label>
+                                <input type="email" class="form-control" id="Email" name="Email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="Password" class="form-label">Lösenord</label>
+                                <input type="password" class="form-control" id="Password" name="Password" required>
+                                <small class="form-text text-muted">Lösenordet måste innehålla minst 8 tecken, inklusive stora och små bokstäver, siffror och specialtecken.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ConfirmPassword" class="form-label">Bekräfta lösenord</label>
+                                <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="PhoneNumber" class="form-label">Telefonnummer</label>
+                                <input type="tel" class="form-control" id="PhoneNumber" name="PhoneNumber">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="profileImage" class="form-label">Profilbild</label>
+                                <input type="file" class="form-control" id="profileImage" name="profileImage">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="Address" class="form-label">Adress</label>
+                            <input type="text" class="form-control" id="Address" name="Address">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="PostalCode" class="form-label">Postnummer</label>
+                                <input type="text" class="form-control" id="PostalCode" name="PostalCode" required placeholder="XXX XX">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="City" class="form-label">Stad</label>
+                                <input type="text" class="form-control" id="City" name="City" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="termsAccepted" required>
+                            <label class="form-check-label" for="termsAccepted">Jag godkänner <a href="#" class="text-decoration-none">användarvillkoren</a> och <a href="#" class="text-decoration-none">integritetspolicyn</a></label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Skapa konto</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">Har du redan ett konto? <a href="@Url.Action("Login", "Account")" class="text-decoration-none">Logga in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
