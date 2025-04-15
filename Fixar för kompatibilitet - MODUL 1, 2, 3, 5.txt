@@ -1,0 +1,56 @@
+FIXAR EFTER LUKAS MERGE
+=========================================
+
+Det här dokumentet beskriver exakt vad vi behövde göra för att få Lukas kod ("Modul 3") från "TechPulse1957" att fungera tillsammans med vår version av TechPulse (Modul 1, 2, 5). Vi gick igenom hela projektet och fixade konflikt efter konflikt. Det här är vad vi gjorde:
+
+1. **Program.cs**:
+   - Vi behöll vår version men la till Lukas `HttpContextAccessor` och session-inställningar.
+   - Vi såg till att middleware-ordningen var korrekt: StaticFiles → Routing → Auth → Session.
+
+2. **TechPulseDbContext.cs**:
+   - Vi la till Lukas modeller: `Order`, `OrderItem`, `CartItem`, och `ShoppingCart`.
+   - Behöll våra `User`, `Article`, `Product`, `PurchaseHistory`.
+   - Vi såg till att decimalprecision var korrekt på `Price`, `TotalAmount` och `UnitPrice`.
+
+3. **TechPulseDbContextModelSnapshot.cs**:
+   - Vi tog med både `Articles` och `Orders`.
+   - Se till att alla `HasData()`-seeds fanns med.
+   - Navigationsprop och relationer sattes korrekt.
+
+4. **Controllers**:
+   - Vi behöll våra `LoginController`, `CreateAccountController`, `HomeController`.
+   - Vi tog in Lukas nya controllers: `AccountController`, `CartController`, `ProductController`.
+
+5. **Modeller**:
+   - Vi fixade `LoginModel.cs` så att den accepterar email men ändå heter "Användarnamn".
+   - Behöll våra modeller men tog in Lukas shopping- och ordermodeller.
+   - Kontrollera att `User.cs` fungerar för både inloggning och profilhantering.
+
+6. **Views**:
+   - `Views/Login/Index.cshtml`: Kombinerade vår layout + Lukas etiketter.
+   - `Views/CreateAccount/Create.cshtml`: Lukas version med filuppladdning.
+   - `Views/Home/Index.cshtml`: Behöll vår välkomsttext + Lukas sökfält.
+   - Tog bort `Views/Home/Profile.cshtml` eftersom Lukas `Views/Account/Profile.cshtml` var bättre.
+
+7. **CSS & JS**:
+   - `site.css`: Mörkt/Ljust läge + Lukas flex & layout.
+   - `GSAP.js`: Vi behöll våra animationer.
+   - `site.js`: La till robusta `DOMContentLoaded`, null-checks, OTP-modal-hantering.
+
+8. **appsettings.json**:
+   - Behöll vår DB-connection med namn `TechPulseDb`.
+
+9. **Konflikter**:
+   - Vi gick fil för fil. Manuellt.
+   - 43 deletions bara i EN fil.
+   - Merge-konflikter i: ~15+ filer.
+   - Allt är nu testat, stabilt och PUSHHAT till GitHub.
+
+10. **Extra filer**:
+   - `LOGIN DEBUGGNING - Modul 1.txt`
+   - `LOGIN DEBUGGNING SOM ADMINISTRATÖR FÖR ATT SE ANDRAS KÖPHISTORIK - Modul 3.txt` 
+   - Dessa dokumenterar buggar och tester.
+
+---
+
+!! Viktigt: **Det här var INTE bara en merge. Det var en integration av två kodbaser.** Vi löste alla brutna delar, fixade views, kontroller, databasen, models, front-end och session.
