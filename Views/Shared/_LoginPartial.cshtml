@@ -1,0 +1,36 @@
+@model TechPulse.Models.LoginModel
+
+<form method="post" asp-controller="Login" asp-action="Index">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" required />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" required />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" asp-for="RememberMe" id="rememberMe">
+        <label class="form-check-label" for="rememberMe" asp-for="RememberMe"></label>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary w-100">Logga in</button>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("ForgotPassword", "Login")" class="text-decoration-none">Glömt lösenord?</a>
+    </div>
+</form> 

@@ -64,59 +64,24 @@ function openOtpModal() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const username = document.getElementById("Username");
-  const password = document.getElementById("Password");
   const rememberMe = document.getElementById("rememberMe");
 
-  if (!username || !password) {
-    return;
-  }
+  if (rememberMe) {
+    const username = document.getElementById("Username");
+    const password = document.getElementById("Password");
 
-  const usernameError = document.getElementById("usernameError");
-  const passwordError = document.getElementById("passwordError");
-
-  function toggleCheckbox() {
-    if (!username || !password || !rememberMe) return;
-
-    let isFilled = username.value.trim() !== "" && password.value.trim() !== "";
-
-    rememberMe.disabled = !isFilled;
-
-    if (!isFilled) {
-      rememberMe.checked = false;
+    function toggleCheckbox() {
+      if (!username || !password || !rememberMe) return;
+      let isFilled =
+        username.value.trim() !== "" && password.value.trim() !== "";
+      rememberMe.disabled = !isFilled;
+      if (!isFilled) {
+        rememberMe.checked = false;
+      }
     }
-  }
 
-  if (username) {
-    username.addEventListener("input", toggleCheckbox);
-
-    if (usernameError) {
-      username.addEventListener("input", function () {
-        if (username.value.trim() === "") {
-          username.classList.add("border-danger");
-          usernameError.style.display = "block";
-        } else {
-          username.classList.remove("border-danger");
-          usernameError.style.display = "none";
-        }
-      });
-    }
-  }
-
-  if (password) {
-    password.addEventListener("input", toggleCheckbox);
-
-    if (passwordError) {
-      password.addEventListener("input", function () {
-        if (password.value.trim() === "") {
-          password.classList.add("border-danger");
-          passwordError.style.display = "block";
-        } else {
-          password.classList.remove("border-danger");
-          passwordError.style.display = "none";
-        }
-      });
-    }
+    if (username) username.addEventListener("input", toggleCheckbox);
+    if (password) password.addEventListener("input", toggleCheckbox);
   }
 });
 

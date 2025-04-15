@@ -45,6 +45,9 @@ namespace TechPulse.Models
         [DisplayName("Stad")]
         public string? City { get; set; }
 
+        [Display(Name = "Roll")]
+        public string Role { get; set; } = "User";
+
         // Password reset functionality
         public string? PasswordResetToken { get; set; }
         public DateTime? ResetTokenCreated { get; set; }
@@ -52,5 +55,10 @@ namespace TechPulse.Models
         // Navigation properties
         public List<PurchaseHistory>? PurchaseHistories { get; set; }
         public List<Order>? Orders { get; set; }
+        public virtual ICollection<Comment>? Comments { get; set; }
+        public virtual ICollection<ForumThread>? ForumThreads { get; set; }
+        public virtual ICollection<ForumReply>? ForumReplies { get; set; }
+        public virtual ICollection<Follow>? Following { get; set; }
+        public virtual ICollection<Follow>? Followers { get; set; }
     }
 }

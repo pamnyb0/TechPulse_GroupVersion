@@ -29,42 +29,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" asp-controller="Login" asp-action="Index" id="loginForm">
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <label for="Username">Användarnamn eller e-post:</label>
-                            <input type="text" id="Username" name="Username" class="form-control" required />
-                            <small id="usernameError" class="text-danger mt-2" style="display: none;">Du måste fylla i fältet.</small>
-                        </div>
-
-                        <div class="form-group mt-3">
-                            <label for="Password">Lösenord:</label>
-                            <input type="password" id="Password" name="Password" class="form-control" required />
-                            <small id="passwordError" class="text-danger mt-2" style="display: none;">Du måste fylla i fältet.</small>
-                        </div>
-
-                        <div class="form-check mt-3">
-                            <input class="form-check-input" type="checkbox" id="rememberMe" name="RememberMe">
-                            <label class="form-check-label" for="rememberMe">Håll mig inloggad</label>
-                        </div>
-
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary w-100">Logga in</button>
-                        </div>
-
-                        <div class="modal-account mt-3 text-center">
-                            <a href="@Url.Action("Create", "CreateAccount")" class="pulse-text" aria-label="Skapa konto">Skapa konto</a>
-                            <span class="mx-2">|</span>
-                            <a href="@Url.Action("Index", "ForgottenPassword")" class="pulse-text" aria-label="Glömt lösenord?">Glömt lösenord?</a>
-                        </div>
-
-                        @if (TempData["Message"] != null)
-                        {
-                            <div class="alert alert-danger mt-3">
-                                @TempData["Message"]
-                            </div>
-                        }
-                    </form>
+                    @await Html.PartialAsync("_LoginPartial", new TechPulse.Models.LoginModel())
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">Har du inget konto? <a href="@Url.Action("Create", "CreateAccount")" class="text-decoration-none">Skapa konto</a></p>
                 </div>
             </div>
         </div>

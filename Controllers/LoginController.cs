@@ -48,30 +48,30 @@ namespace TechPulse.Controllers
 
                 if (user != null && user.Password == model.Password)
                 {
-                    // Set session variables for logged in user
+                    // Set session variables
                     HttpContext.Session.SetString("IsLoggedIn", "true");
                     HttpContext.Session.SetString("UserId", user.Id.ToString());
                     HttpContext.Session.SetString("Username", user.Username);
-                    
-                    // Set profile image URL
+                    HttpContext.Session.SetString("UserRole", user.Role ?? "User");
+
+                    // Set profile image if exists
                     if (!string.IsNullOrEmpty(user.ProfileImageUrl))
                     {
-                        HttpContext.Session.SetString("ProfileImageUrl", 
-                            user.ProfileImageUrl.StartsWith("~/uploads/") ? user.ProfileImageUrl : $"~/uploads/{user.ProfileImageUrl}");
+                        HttpContext.Session.SetString("ProfileImageUrl", user.ProfileImageUrl);
                     }
 
                     _logger.LogInformation($"User {user.Username} logged in successfully");
                     return RedirectToAction("Index", "Home");
                 }
 
+                ModelState.AddModelError("", "Ogiltigt användarnamn eller lösenord");
                 _logger.LogWarning($"Failed login attempt for username: {model.Username}");
-                ModelState.AddModelError(string.Empty, "Ogiltigt användarnamn eller lösenord.");
                 return View(model);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Login error: {ex.Message}");
-                ModelState.AddModelError(string.Empty, "Ett fel uppstod vid inloggningen. Försök igen senare.");
+                _logger.LogError($"Error during login: {ex.Message}");
+                ModelState.AddModelError("", "Ett fel uppstod vid inloggningen. Försök igen.");
                 return View(model);
             }
         }
@@ -82,13 +82,14 @@ namespace TechPulse.Controllers
         {
             var username = HttpContext.Session.GetString("Username");
             HttpContext.Session.Clear();
-            
-            if (!string.IsNullOrEmpty(username))
-            {
-                _logger.LogInformation($"User {username} logged out");
-            }
-            
+            _logger.LogInformation($"User {username} logged out");
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
         }
     }
 }
